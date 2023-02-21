@@ -44,6 +44,10 @@
             this.txt_PLC_Filter = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txt_Call_State = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txt_number_being_called = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txt_PBX_URL = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -197,8 +201,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txt_Call_State);
             this.groupBox1.Controls.Add(this.txt_PLC_IP);
+            this.groupBox1.Controls.Add(this.label19);
             this.groupBox1.Controls.Add(this.txt_PLC_Filter);
+            this.groupBox1.Controls.Add(this.txt_number_being_called);
+            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label2);
@@ -213,16 +221,50 @@
             this.groupBox1.Controls.Add(this.txt_PLC_Number2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(230, 210);
+            this.groupBox1.Size = new System.Drawing.Size(230, 257);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC Settings";
+            // 
+            // txt_Call_State
+            // 
+            this.txt_Call_State.Location = new System.Drawing.Point(117, 227);
+            this.txt_Call_State.Name = "txt_Call_State";
+            this.txt_Call_State.Size = new System.Drawing.Size(100, 20);
+            this.txt_Call_State.TabIndex = 37;
+            this.txt_Call_State.Text = "CallState";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(5, 230);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(50, 13);
+            this.label19.TabIndex = 36;
+            this.label19.Text = "Call state";
+            // 
+            // txt_number_being_called
+            // 
+            this.txt_number_being_called.Location = new System.Drawing.Point(117, 201);
+            this.txt_number_being_called.Name = "txt_number_being_called";
+            this.txt_number_being_called.Size = new System.Drawing.Size(100, 20);
+            this.txt_number_being_called.TabIndex = 35;
+            this.txt_number_being_called.Text = "BeingCalled";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(5, 204);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(106, 13);
+            this.label10.TabIndex = 34;
+            this.label10.Text = "Number Being Called";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.txt_PBX_URL);
             this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Location = new System.Drawing.Point(12, 322);
+            this.groupBox2.Location = new System.Drawing.Point(15, 369);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(227, 60);
             this.groupBox2.TabIndex = 15;
@@ -253,7 +295,7 @@
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Controls.Add(this.txt_Interval);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Location = new System.Drawing.Point(12, 228);
+            this.groupBox3.Location = new System.Drawing.Point(15, 275);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(227, 88);
             this.groupBox3.TabIndex = 16;
@@ -320,7 +362,7 @@
             this.txt_PBX_status.Location = new System.Drawing.Point(272, 228);
             this.txt_PBX_status.Multiline = true;
             this.txt_PBX_status.Name = "txt_PBX_status";
-            this.txt_PBX_status.Size = new System.Drawing.Size(516, 41);
+            this.txt_PBX_status.Size = new System.Drawing.Size(516, 121);
             this.txt_PBX_status.TabIndex = 18;
             // 
             // label11
@@ -424,7 +466,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(275, 365);
+            this.label18.Location = new System.Drawing.Point(275, 411);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(53, 13);
             this.label18.TabIndex = 31;
@@ -432,7 +474,7 @@
             // 
             // txt_Extension
             // 
-            this.txt_Extension.Location = new System.Drawing.Point(387, 362);
+            this.txt_Extension.Location = new System.Drawing.Point(387, 408);
             this.txt_Extension.Name = "txt_Extension";
             this.txt_Extension.Size = new System.Drawing.Size(100, 20);
             this.txt_Extension.TabIndex = 32;
@@ -443,7 +485,7 @@
             // 
             // txt_PBX_call_info
             // 
-            this.txt_PBX_call_info.Location = new System.Drawing.Point(272, 286);
+            this.txt_PBX_call_info.Location = new System.Drawing.Point(272, 361);
             this.txt_PBX_call_info.Multiline = true;
             this.txt_PBX_call_info.Name = "txt_PBX_call_info";
             this.txt_PBX_call_info.Size = new System.Drawing.Size(516, 41);
@@ -453,7 +495,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 388);
+            this.ClientSize = new System.Drawing.Size(800, 440);
             this.Controls.Add(this.txt_PBX_call_info);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.txt_Extension);
@@ -531,6 +573,10 @@
         private System.Windows.Forms.TextBox txt_Extension;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox txt_PBX_call_info;
+        private System.Windows.Forms.TextBox txt_number_being_called;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txt_Call_State;
+        private System.Windows.Forms.Label label19;
     }
 }
 
