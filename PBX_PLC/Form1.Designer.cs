@@ -39,15 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txt_PLC_trigger = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.txt_PLC_Event = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txt_PLC_Filter = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txt_Call_State = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.txt_number_being_called = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txt_PBX_URL = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -61,10 +53,6 @@
             this.txt_PBX_status = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.txt_Filter_value = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txt_Event_value = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.txt_Trigger_value = new System.Windows.Forms.TextBox();
             this.txt_Number1_value = new System.Windows.Forms.TextBox();
@@ -165,54 +153,12 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Phone Call Trigger";
             // 
-            // txt_PLC_Event
-            // 
-            this.txt_PLC_Event.Location = new System.Drawing.Point(117, 149);
-            this.txt_PLC_Event.Name = "txt_PLC_Event";
-            this.txt_PLC_Event.Size = new System.Drawing.Size(100, 20);
-            this.txt_PLC_Event.TabIndex = 11;
-            this.txt_PLC_Event.Text = "CallEvent";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(5, 152);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(89, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Phone Call Event";
-            // 
-            // txt_PLC_Filter
-            // 
-            this.txt_PLC_Filter.Location = new System.Drawing.Point(117, 175);
-            this.txt_PLC_Filter.Name = "txt_PLC_Filter";
-            this.txt_PLC_Filter.Size = new System.Drawing.Size(100, 20);
-            this.txt_PLC_Filter.TabIndex = 13;
-            this.txt_PLC_Filter.Text = "CallFilter";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 178);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(83, 13);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Phone Call Filter";
-            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.txt_Call_State);
             this.groupBox1.Controls.Add(this.txt_PLC_IP);
-            this.groupBox1.Controls.Add(this.label19);
-            this.groupBox1.Controls.Add(this.txt_PLC_Filter);
-            this.groupBox1.Controls.Add(this.txt_number_being_called);
-            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.txt_PLC_Event);
             this.groupBox1.Controls.Add(this.txt_PLC_path);
-            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txt_PLC_trigger);
             this.groupBox1.Controls.Add(this.txt_PLC_Number1);
@@ -221,44 +167,10 @@
             this.groupBox1.Controls.Add(this.txt_PLC_Number2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(230, 257);
+            this.groupBox1.Size = new System.Drawing.Size(230, 156);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PLC Settings";
-            // 
-            // txt_Call_State
-            // 
-            this.txt_Call_State.Location = new System.Drawing.Point(117, 227);
-            this.txt_Call_State.Name = "txt_Call_State";
-            this.txt_Call_State.Size = new System.Drawing.Size(100, 20);
-            this.txt_Call_State.TabIndex = 37;
-            this.txt_Call_State.Text = "CallState";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(5, 230);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(50, 13);
-            this.label19.TabIndex = 36;
-            this.label19.Text = "Call state";
-            // 
-            // txt_number_being_called
-            // 
-            this.txt_number_being_called.Location = new System.Drawing.Point(117, 201);
-            this.txt_number_being_called.Name = "txt_number_being_called";
-            this.txt_number_being_called.Size = new System.Drawing.Size(100, 20);
-            this.txt_number_being_called.TabIndex = 35;
-            this.txt_number_being_called.Text = "BeingCalled";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(5, 204);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(106, 13);
-            this.label10.TabIndex = 34;
-            this.label10.Text = "Number Being Called";
             // 
             // groupBox2
             // 
@@ -383,38 +295,6 @@
             this.label12.TabIndex = 20;
             this.label12.Text = "Status of PBX side";
             // 
-            // txt_Filter_value
-            // 
-            this.txt_Filter_value.Location = new System.Drawing.Point(387, 164);
-            this.txt_Filter_value.Name = "txt_Filter_value";
-            this.txt_Filter_value.Size = new System.Drawing.Size(100, 20);
-            this.txt_Filter_value.TabIndex = 30;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(275, 167);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 13);
-            this.label13.TabIndex = 29;
-            this.label13.Text = "Phone Call Filter";
-            // 
-            // txt_Event_value
-            // 
-            this.txt_Event_value.Location = new System.Drawing.Point(655, 138);
-            this.txt_Event_value.Name = "txt_Event_value";
-            this.txt_Event_value.Size = new System.Drawing.Size(100, 20);
-            this.txt_Event_value.TabIndex = 28;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(543, 141);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(89, 13);
-            this.label14.TabIndex = 27;
-            this.label14.Text = "Phone Call Event";
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -499,10 +379,6 @@
             this.Controls.Add(this.txt_PBX_call_info);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.txt_Extension);
-            this.Controls.Add(this.txt_Filter_value);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.txt_Event_value);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.txt_Trigger_value);
             this.Controls.Add(this.txt_Number1_value);
@@ -541,10 +417,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txt_PLC_trigger;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txt_PLC_Event;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txt_PLC_Filter;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txt_PBX_URL;
@@ -559,10 +431,6 @@
         private System.Windows.Forms.TextBox txt_PBX_status;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox txt_Filter_value;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox txt_Event_value;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txt_Trigger_value;
         private System.Windows.Forms.TextBox txt_Number1_value;
@@ -573,10 +441,6 @@
         private System.Windows.Forms.TextBox txt_Extension;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox txt_PBX_call_info;
-        private System.Windows.Forms.TextBox txt_number_being_called;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox txt_Call_State;
-        private System.Windows.Forms.Label label19;
     }
 }
 

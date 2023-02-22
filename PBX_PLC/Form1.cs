@@ -27,10 +27,14 @@ namespace PBX_PLC
         long cycleCount;
         CallListResult callListResult;
 
+        public TagBool tagPLCTrigger, tagPLCEvent, tagPLC1001Event, tagPLC1002Event, tagPLC1003Event, tagPLC1004Event, tagPLCserverFail;
+        public TagDint tagPLCNumber1, tagPLCNumber2, tagPLCFilter, tagPLCcallTo, tagPLC1001State, tagPLC1002State, tagPLC1003State, tagPLC1004State;
+        public TagString tagPLCstate1, tagPLCstate2, tagPLCstate3, tagPLCstate4;
+        private bool setEvent;
 
-        public int tagNumber1, tagNumber2, tagFilter, tagNumberCallTo;
-        public bool tagTrigger, tagEvent, triggerClear;
-        public string tagState = "";
+        public int tagNumber1, tagNumber2, tagFilter, tagNumberCallTo, tag1001State, tag1002State, tag1003State, tag1004State;
+        public bool tagTrigger, tagEvent, triggerClear, tag1001Event, tag1002Event, tag1003Event, tag1004Event, tagServerFail;
+        public string tagState1 = "", tagState2 = "", tagState3 = "", tagState4 = "";
 
         private void txt_Interval_TextChanged(object sender, EventArgs e)
         {
@@ -54,19 +58,23 @@ namespace PBX_PLC
 
         private void writePLC()
         {
-            if(setEvent)
-            {
-                tagPLCEvent.Write(1);
-                setEvent = false;
-            }    
             if (triggerClear)
             {
-                tagPLCTrigger.Write(0);
+                tagPLCTrigger.Write(false);
                 triggerClear = false;
             }
-            tagPLCstate.Write(tagState);
-            tagPLCcallTo.Write(tagNumberCallTo);
 
+            tagPLC1001State.Write(tag1001State);
+            tagPLC1002State.Write(tag1002State);
+            tagPLC1003State.Write(tag1003State);
+            tagPLC1004State.Write(tag1004State);
+
+            tagPLC1001Event.Write(tag1001Event);
+            tagPLC1002Event.Write(tag1002Event);    
+            tagPLC1003Event.Write(tag1003Event);
+            tagPLC1004Event.Write(tag1004Event);
+
+            tagPLCserverFail.Write(tagServerFail);
         }
 
         private void writePBX()
@@ -74,23 +82,31 @@ namespace PBX_PLC
             if (tagTrigger)
             {
                 timer1.Stop();
-                request1 = new RestRequest(txt_PBX_URL.Text, Method.Post);
+                try
+                {
+                    request1 = new RestRequest(txt_PBX_URL.Text, Method.Post);
 
-                request1.AddHeader("Authorization", "Basic YWRtaW46IVBhc3N3b3JkMDE=");
-                request1.AddHeader("Content-Type", "application/json");
+                    request1.AddHeader("Authorization", "Basic YWRtaW46IVBhc3N3b3JkMDE=");
+                    request1.AddHeader("Content-Type", "application/json");
 
 
-                callRequest.request.parameters.dial_as_account_id = "1106";
-                callRequest.request.parameters.dial_first = tagNumber1.ToString();
-                callRequest.request.parameters.dial_second = tagNumber2.ToString();
+                    callRequest.request.parameters.dial_as_account_id = "1106";
+                    callRequest.request.parameters.dial_first = tagNumber1.ToString();
+                    callRequest.request.parameters.dial_second = tagNumber2.ToString();
 
-                txt_PBX_status.Text = "Calling Fire Department";
+                    txt_PBX_status.Text = "Calling";
 
-                request1.AddJsonBody<CallRequest>(callRequest);
-                var response = client1.Post(request1);
-                txt_PBX_status.Text = response.Content;
-                triggerClear = true;
-                //timer1.Interval = int.Parse(txt_Interval.Text);
+                    request1.AddJsonBody<CallRequest>(callRequest);
+                    var response = client1.Post(request1);
+                    txt_PBX_status.Text = response.Content;
+                    triggerClear = true;
+                    //timer1.Interval = int.Parse(txt_Interval.Text);
+                }
+                catch(Exception ex)
+                {
+                    tagServerFail = false;
+                }
+
                 timer1.Start();
             }
         }
@@ -99,6 +115,10 @@ namespace PBX_PLC
         {
             
                 timer1.Stop();
+
+            tagServerFail = true;
+            try
+            {
                 request1 = new RestRequest(txt_PBX_URL.Text, Method.Post);
 
                 request1.AddHeader("Authorization", "Basic YWRtaW46IVBhc3N3b3JkMDE=");
@@ -112,70 +132,45 @@ namespace PBX_PLC
                 var response = client1.Post(request1);
                 txt_PBX_status.Text = response.Content;
 
-            //    callListResult = JsonConvert.DeserializeObject<CallListResult>(response.Content);
-            //if (callListResult.response.result.current_calls.total_items != "0")
-            //{
-            //    if (callListResult.response.result.current_calls.current_call[2] is CurrentCall item)
-            //    {
-            //        //if (item.ValueKind != JsonValueKind.Array)
-            //        {
-            //            //CurrentCall call = JsonConvert.DeserializeObject<CurrentCall>(item.GetRawText());
-            //            txt_Extension.Text = item.from_caller_id_number;
-            //            //txt_PBX_call_info.Text = item.ToString();
-            //            if (item.from_caller_id_number.Equals(tagFilter.ToString()))
-            //            {
-            //                tagNumberCallTo = int.Parse(item.to_caller_id_name);
-            //                tagState = item.state;
-            //                setEvent = true;
-            //            }
-            //        }
-            //        //if (item.ValueKind == JsonValueKind.Array)
-            //        //    {
-            //        //        CurrentCall currentCall = JsonConvert.DeserializeObject<CurrentCall>(item[0].GetRawText());
-            //        //        if (currentCall.from_caller_id_number.Equals(tagFilter.ToString()))
-            //        //        {
-            //        //            tagNumberCallTo = int.Parse(currentCall.to_caller_id_name);
-            //        //            tagState = currentCall.state;
-            //        //            setEvent = true;
-            //        //        }
-            //        //    }
-            //    }
-            //}
+                callListResult = JsonSerializer.Deserialize<CallListResult>(response.Content);
+            }
+            catch (Exception ex)
+            {
+                tagServerFail = false;
+            }
 
-            callListResult = JsonSerializer.Deserialize<CallListResult>(response.Content);
 
+
+
+
+            tag1001State = 0;
+            tag1002State = 0;
+            tag1003State = 0;
+            tag1004State = 0;
+
+
+            tag1001Event = false;
+            tag1002Event = false;
+            tag1003Event = false;
+            tag1004Event = false;
             if (callListResult.response.result.current_calls.total_items != "0")
             {
                 if (callListResult.response.result.current_calls.current_call is JsonElement items)
                     if (items.ValueKind == JsonValueKind.Array)
                     {
-
                         List<CurrentCall> these_call = JsonSerializer.Deserialize<List<CurrentCall>>(items.GetRawText());
                         foreach (CurrentCall this_call in these_call)
                         {
-
-                            if (this_call.from_caller_id_number.Equals(tagFilter.ToString()))
-                            {
-                                txt_Extension.Text = this_call.from_caller_id_number;
-                                tagNumberCallTo = int.Parse(this_call.from_caller_id_number);
-                                tagState = this_call.state;
-                                setEvent = true;
-                            }
+                            process_calls(this_call);
                         }
                     }
 
                     else
                     {
                         CurrentCall this_call = JsonSerializer.Deserialize<CurrentCall>(items.GetRawText());
-                        txt_Extension.Text = this_call.from_caller_id_number;
-                        txt_PBX_call_info.Text = this_call.ToString();
-                        if (this_call.from_caller_id_number.Equals(tagFilter.ToString()))
-                        {
-                            txt_Extension.Text = this_call.from_caller_id_number;
-                            tagNumberCallTo = int.Parse(this_call.from_caller_id_number);
-                            tagState = this_call.state;
-                            setEvent = true;
-                        }
+                        //txt_Extension.Text = this_call.from_caller_id_number;
+                        //txt_PBX_call_info.Text = this_call.ToString();
+                        process_calls(this_call);
                     }
 
             }
@@ -183,19 +178,72 @@ namespace PBX_PLC
 
 
         }
+        private void process_calls(CurrentCall this_call)
+        {
+            if (this_call.from_caller_id_number.Equals("1001"))
+            {
+                tag1001Event = true;
+                if (this_call.state.Equals("ringing"))
+                {
+                    tag1001State = 1;
+                }
+                if (this_call.state.Equals("talking"))
+                {
+                    tag1001State = 2;
+                }
+            }
 
+            if (this_call.from_caller_id_number.Equals("1002"))
+            {
+                tag1002Event = true;
+                if (this_call.state.Equals("ringing"))
+                {
+                    tag1002State = 1;
+                }
+                if (this_call.state.Equals("talking"))
+                {
+                    tag1002State = 2;
+                }
+            }
+
+            if (this_call.from_caller_id_number.Equals("1003"))
+            {
+                tag1003Event = true;
+                if (this_call.state.Equals("ringing"))
+                {
+                    tag1003State = 1;
+                }
+                if (this_call.state.Equals("talking"))
+                {
+                    tag1003State = 2;
+                }
+            }
+
+            if (this_call.from_caller_id_number.Equals("1004"))
+            {
+                tag1004Event = true;
+                if (this_call.state.Equals("ringing"))
+                {
+                    tag1004State = 1;
+                }
+                if (this_call.state.Equals("talking"))
+                {
+                    tag1004State = 2;
+                }
+            }
+        }
         private void readPLC()
         {
             tagNumber1 = tagPLCNumber1.Read();
             tagNumber2 = tagPLCNumber2.Read();
-            tagFilter = tagPLCFilter.Read();
-            tagTrigger = (tagPLCTrigger.Read() == 1);
-            tagEvent = (tagPLCEvent.Read() == 1); 
-            txt_PLC_status.Text = tagNumber1.ToString() + " " + tagNumber2.ToString() + " "+ tagFilter.ToString() + " " + tagTrigger.ToString() + " " + tagEvent.ToString();
+            //tagFilter = tagPLCFilter.Read();
+            tagTrigger = tagPLCTrigger.Read();
+            //tagEvent = tagPLCEvent.Read(); 
+            //txt_PLC_status.Text = tagNumber1.ToString() + " " + tagNumber2.ToString() + " "+ tagFilter.ToString() + " " + tagTrigger.ToString() + " " + tagEvent.ToString();
             txt_Number1_value.Text = tagNumber1.ToString();
             txt_Number2_value.Text = tagNumber2.ToString();
-            txt_Filter_value.Text = tagFilter.ToString();
-            txt_Event_value.Text = tagEvent.ToString();
+            //txt_Filter_value.Text = tagFilter.ToString();
+            //txt_Event_value.Text = tagEvent.ToString();
             txt_Trigger_value.Text = tagTrigger.ToString();
         }
 
@@ -221,17 +269,7 @@ namespace PBX_PLC
                 Timeout = TimeSpan.FromSeconds(5)
 
             };
-            tagPLCFilter = new TagDint()
-            {
-                Name = txt_PLC_Filter.Text,
-                Gateway = txt_PLC_IP.Text,
-                Path = txt_PLC_path.Text,
-                PlcType = libplctag.PlcType.ControlLogix,
-                Protocol = libplctag.Protocol.ab_eip,
-                Timeout = TimeSpan.FromSeconds(5)
-
-            };
-            tagPLCTrigger = new TagDint()
+            tagPLCTrigger = new TagBool()
             {
                 Name = txt_PLC_trigger.Text,
                 Gateway = txt_PLC_IP.Text,
@@ -241,44 +279,94 @@ namespace PBX_PLC
                 Timeout = TimeSpan.FromSeconds(5)
 
             };
-            tagPLCEvent = new TagDint()
+            tagPLC1001Event = new TagBool()
             {
-                Name = txt_PLC_Event.Text,
+                Name = "Phone_1001_CallEvent",
                 Gateway = txt_PLC_IP.Text,
                 Path = txt_PLC_path.Text,
                 PlcType = libplctag.PlcType.ControlLogix,
                 Protocol = libplctag.Protocol.ab_eip,
                 Timeout = TimeSpan.FromSeconds(5)
+            };
+            tagPLC1002Event = new TagBool()
+            {
+                Name = "Phone_1002_CallEvent",
+                Gateway = txt_PLC_IP.Text,
+                Path = txt_PLC_path.Text,
+                PlcType = libplctag.PlcType.ControlLogix,
+                Protocol = libplctag.Protocol.ab_eip,
+                Timeout = TimeSpan.FromSeconds(5)
+            };
+            tagPLC1003Event = new TagBool()
+            {
+                Name = "Phone_1003_CallEvent",
+                Gateway = txt_PLC_IP.Text,
+                Path = txt_PLC_path.Text,
+                PlcType = libplctag.PlcType.ControlLogix,
+                Protocol = libplctag.Protocol.ab_eip,
+                Timeout = TimeSpan.FromSeconds(5)
+            };
+            tagPLC1004Event = new TagBool()
+            {
+                Name = "Phone_1004_CallEvent",
+                Gateway = txt_PLC_IP.Text,
+                Path = txt_PLC_path.Text,
+                PlcType = libplctag.PlcType.ControlLogix,
+                Protocol = libplctag.Protocol.ab_eip,
+                Timeout = TimeSpan.FromSeconds(5)
+            };
 
-            };
-            tagPLCcallTo = new TagDint()
+            tagPLC1001State = new TagDint()
             {
-                Name = txt_number_being_called.Text,
+                Name = "Phone_1001_Status",
                 Gateway = txt_PLC_IP.Text,
                 Path = txt_PLC_path.Text,
                 PlcType = libplctag.PlcType.ControlLogix,
                 Protocol = libplctag.Protocol.ab_eip,
                 Timeout = TimeSpan.FromSeconds(5)
             };
-            tagPLCstate = new TagString()
+            tagPLC1002State = new TagDint()
             {
-                Name = txt_Call_State.Text,
+                Name = "Phone_1002_Status",
                 Gateway = txt_PLC_IP.Text,
                 Path = txt_PLC_path.Text,
                 PlcType = libplctag.PlcType.ControlLogix,
                 Protocol = libplctag.Protocol.ab_eip,
                 Timeout = TimeSpan.FromSeconds(5)
             };
-
+            tagPLC1003State = new TagDint()
+            {
+                Name = "Phone_1003_Status",
+                Gateway = txt_PLC_IP.Text,
+                Path = txt_PLC_path.Text,
+                PlcType = libplctag.PlcType.ControlLogix,
+                Protocol = libplctag.Protocol.ab_eip,
+                Timeout = TimeSpan.FromSeconds(5)
+            };
+            tagPLC1004State = new TagDint()
+            {
+                Name = "Phone_1004_Status",
+                Gateway = txt_PLC_IP.Text,
+                Path = txt_PLC_path.Text,
+                PlcType = libplctag.PlcType.ControlLogix,
+                Protocol = libplctag.Protocol.ab_eip,
+                Timeout = TimeSpan.FromSeconds(5)
+            };
+            tagPLCserverFail = new TagBool()
+            {
+                Name = "Phone_Server_Status",
+                Gateway = txt_PLC_IP.Text,
+                Path = txt_PLC_path.Text,
+                PlcType = libplctag.PlcType.ControlLogix,
+                Protocol = libplctag.Protocol.ab_eip,
+                Timeout = TimeSpan.FromSeconds(5)
+            };
             timer1.Start();
             cycleCount = 0;
 
         }
 
-        public TagDint tagPLCTrigger, tagPLCEvent;
-        public TagDint tagPLCNumber1, tagPLCNumber2, tagPLCFilter, tagPLCcallTo;
-        public TagString tagPLCstate;
-        private bool setEvent;
+
 
         public Form1()
         {
