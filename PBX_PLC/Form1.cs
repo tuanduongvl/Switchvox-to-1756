@@ -27,8 +27,8 @@ namespace PBX_PLC
         long cycleCount;
         CallListResult callListResult;
 
-        public TagBool tagPLCTrigger, tagPLCEvent, tagPLC1001Event, tagPLC1002Event, tagPLC1003Event, tagPLC1004Event, tagPLCserverFail;
-        public TagDint tagPLCNumber1, tagPLCNumber2, tagPLCFilter, tagPLCcallTo, tagPLC1001State, tagPLC1002State, tagPLC1003State, tagPLC1004State;
+        public TagBool  tagPLCEvent, tagPLC1001Event, tagPLC1002Event, tagPLC1003Event, tagPLC1004Event, tagPLCserverFail;
+        public TagDint tagPLCTrigger, tagPLCNumber1, tagPLCNumber2, tagPLCFilter, tagPLCcallTo, tagPLC1001State, tagPLC1002State, tagPLC1003State, tagPLC1004State;
         public TagString tagPLCstate1, tagPLCstate2, tagPLCstate3, tagPLCstate4;
         private bool setEvent;
 
@@ -60,7 +60,7 @@ namespace PBX_PLC
         {
             if (triggerClear)
             {
-                tagPLCTrigger.Write(false);
+                tagPLCTrigger.Write(0);
                 triggerClear = false;
             }
 
@@ -237,7 +237,7 @@ namespace PBX_PLC
             tagNumber1 = tagPLCNumber1.Read();
             tagNumber2 = tagPLCNumber2.Read();
             //tagFilter = tagPLCFilter.Read();
-            tagTrigger = tagPLCTrigger.Read();
+            tagTrigger = (tagPLCTrigger.Read()==1);
             //tagEvent = tagPLCEvent.Read(); 
             //txt_PLC_status.Text = tagNumber1.ToString() + " " + tagNumber2.ToString() + " "+ tagFilter.ToString() + " " + tagTrigger.ToString() + " " + tagEvent.ToString();
             txt_Number1_value.Text = tagNumber1.ToString();
@@ -269,7 +269,7 @@ namespace PBX_PLC
                 Timeout = TimeSpan.FromSeconds(5)
 
             };
-            tagPLCTrigger = new TagBool()
+            tagPLCTrigger = new TagDint()
             {
                 Name = txt_PLC_trigger.Text,
                 Gateway = txt_PLC_IP.Text,
