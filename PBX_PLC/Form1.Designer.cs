@@ -63,6 +63,8 @@
             this.txt_Extension = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.txt_PBX_call_info = new System.Windows.Forms.TextBox();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -371,6 +373,10 @@
             this.txt_PBX_call_info.Size = new System.Drawing.Size(516, 41);
             this.txt_PBX_call_info.TabIndex = 33;
             // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -441,6 +447,8 @@
         private System.Windows.Forms.TextBox txt_Extension;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox txt_PBX_call_info;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer timer3;
     }
 }
 

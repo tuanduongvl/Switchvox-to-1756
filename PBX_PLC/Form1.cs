@@ -30,8 +30,14 @@ namespace PBX_PLC
         public TagBool  tagPLCEvent, tagPLC1001Event, tagPLC1002Event, tagPLC1003Event, tagPLC1004Event, tagPLCserverFail;
         public TagDint tagPLCTrigger, tagPLCNumber1, tagPLCNumber2, tagPLCFilter, tagPLCcallTo, tagPLC1001State, tagPLC1002State, tagPLC1003State, tagPLC1004State;
         public TagString tagPLCstate1, tagPLCstate2, tagPLCstate3, tagPLCstate4;
-        private bool setEvent;
 
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+
+            writePBX();
+        }
+
+        
         public int tagNumber1, tagNumber2, tagFilter, tagNumberCallTo, tag1001State, tag1002State, tag1003State, tag1004State;
         public bool tagTrigger, tagEvent, triggerClear, tag1001Event, tag1002Event, tag1003Event, tag1004Event, tagServerFail;
         public string tagState1 = "", tagState2 = "", tagState3 = "", tagState4 = "";
@@ -39,18 +45,20 @@ namespace PBX_PLC
         private void txt_Interval_TextChanged(object sender, EventArgs e)
         {
             timer1.Interval = int.Parse(txt_Interval.Text);
+            timer2.Interval = int.Parse(txt_Interval.Text);
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             timer1.Stop();
+            timer2.Stop();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             readPLC();
             readPBX();
-            writePBX();
             writePLC();
             cycleCount++;
             lbl_cycle.Text = "Cycle: "+ cycleCount.ToString();
@@ -81,7 +89,7 @@ namespace PBX_PLC
         {
             if (tagTrigger)
             {
-                timer1.Stop();
+                timer2.Stop();
                 try
                 {
                     request1 = new RestRequest(txt_PBX_URL.Text, Method.Post);
@@ -97,8 +105,8 @@ namespace PBX_PLC
                     txt_PBX_status.Text = "Calling";
 
                     request1.AddJsonBody<CallRequest>(callRequest);
-                    var response = client1.Post(request1);
-                    txt_PBX_status.Text = response.Content;
+                    client1.PostAsync(request1);
+                    //txt_PBX_status.Text = response.Content;
                     triggerClear = true;
                     //timer1.Interval = int.Parse(txt_Interval.Text);
                 }
@@ -107,7 +115,7 @@ namespace PBX_PLC
                     tagServerFail = false;
                 }
 
-                timer1.Start();
+                timer2.Start();
             }
         }
 
@@ -234,17 +242,27 @@ namespace PBX_PLC
         }
         private void readPLC()
         {
-            tagNumber1 = tagPLCNumber1.Read();
-            tagNumber2 = tagPLCNumber2.Read();
-            //tagFilter = tagPLCFilter.Read();
-            tagTrigger = (tagPLCTrigger.Read()==1);
-            //tagEvent = tagPLCEvent.Read(); 
-            //txt_PLC_status.Text = tagNumber1.ToString() + " " + tagNumber2.ToString() + " "+ tagFilter.ToString() + " " + tagTrigger.ToString() + " " + tagEvent.ToString();
-            txt_Number1_value.Text = tagNumber1.ToString();
-            txt_Number2_value.Text = tagNumber2.ToString();
-            //txt_Filter_value.Text = tagFilter.ToString();
-            //txt_Event_value.Text = tagEvent.ToString();
-            txt_Trigger_value.Text = tagTrigger.ToString();
+            try
+            {
+
+                tagNumber1 = tagPLCNumber1.Read();
+                tagNumber2 = tagPLCNumber2.Read();
+                //tagFilter = tagPLCFilter.Read();
+                tagTrigger = (tagPLCTrigger.Read() == 1);
+                //tagEvent = tagPLCEvent.Read(); 
+                //txt_PLC_status.Text = tagNumber1.ToString() + " " + tagNumber2.ToString() + " "+ tagFilter.ToString() + " " + tagTrigger.ToString() + " " + tagEvent.ToString();
+                txt_Number1_value.Text = tagNumber1.ToString();
+                txt_Number2_value.Text = tagNumber2.ToString();
+                //txt_Filter_value.Text = tagFilter.ToString();
+                //txt_Event_value.Text = tagEvent.ToString();
+                txt_Trigger_value.Text = tagTrigger.ToString();
+
+                txt_PLC_status.Text = "read PLC ok";
+            }
+            catch (Exception ex)
+            {
+                txt_PLC_status.Text = "read PLC failed: "+ex.Message;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -362,6 +380,7 @@ namespace PBX_PLC
                 Timeout = TimeSpan.FromSeconds(5)
             };
             timer1.Start();
+            timer2.Start();
             cycleCount = 0;
 
         }
@@ -380,6 +399,7 @@ namespace PBX_PLC
             callRequest.request.parameters = new Parameters();
             callRequest.request.method = "switchvox.call";
             timer1.Interval = 1000;
+            timer2.Interval = 1000;
         }
     }
 }
