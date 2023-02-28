@@ -267,6 +267,12 @@ namespace PBX_PLC
 
         private void button1_Click(object sender, EventArgs e)
         {
+            start_timer();
+
+        }
+
+        void start_timer()
+        {
             tagPLCNumber1 = new TagDint()
             {
                 Name = txt_PLC_Number1.Text,
@@ -382,9 +388,7 @@ namespace PBX_PLC
             timer1.Start();
             timer2.Start();
             cycleCount = 0;
-
         }
-
 
 
         public Form1()
@@ -400,6 +404,9 @@ namespace PBX_PLC
             callRequest.request.method = "switchvox.call";
             timer1.Interval = 1000;
             timer2.Interval = 1000;
+
+
+            start_timer();
         }
     }
 }
